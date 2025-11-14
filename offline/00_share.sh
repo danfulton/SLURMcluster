@@ -32,8 +32,9 @@ END {
 echo "RAID pair for nfs share: ${nvmes[0]} ${nvmes[1]} ${nvmes[2]}"
 
 sudo mdadm --create /dev/md120 --level 0 --raid-devices 3 /dev/${nvmes[0]} /dev/${nvmes[1]} /dev/${nvmes[2]}
-sudo mkfs.xfs /dev/md120
+sudo mkfs.xfs -L share /dev/md120
 sudo mkdir /share
 sudo mount /dev/md120 /share
 sudo chmod 1777 /share
+sudo bash -c 'echo "LABEL=share /share xfs defaults,nofail 0 2" >> /etc/fstab'
 
