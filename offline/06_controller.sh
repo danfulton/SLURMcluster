@@ -35,8 +35,9 @@ sudo rm -rf pmix-4.2.9
 
 cp /share/sources/slurm-23.11.5.tar.bz2 .
 tar xjf slurm-23.11.5.tar.bz2
+
 cd slurm-23.11.5/
-./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11
+./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config
 make -j 90
 sudo make install
 cd ..
@@ -45,8 +46,8 @@ echo 'export PATH=/share/sched/slurm/23.11.5/bin:$PATH' | sudo tee $SCHEDROOT/sl
 #sudo unlink /etc/profile.d/99_slurm_path.sh
 sudo ln -s $SCHEDROOT/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
 
-sudo addgroup --system --gid 986 slurm
-sudo adduser  --system --uid 992  --gid 986  --disabled-login --disabled-password --no-create-home --gecos "" --shell /usr/sbin/nologin slurm
+getent group slurm >/dev/null || sudo addgroup --system --gid 986 slurm
+id -u slurm >/dev/null 2>&1 || sudo adduser  --system --uid 992  --gid 986  --disabled-login --disabled-password --no-create-home --gecos "" --shell /usr/sbin/nologin slurm
 
 sudo mkdir -p /var/log/slurm
 sudo chown slurm:slurm /var/log/slurm
@@ -62,10 +63,10 @@ sudo chown slurm:slurm /var/spool/slurmctld
 sudo touch /var/log/slurmctld.log
 sudo chown slurm:slurm /var/log/slurmctld.log
 
-sudo cp slurm-23.11.5/etc/slurmctld.service /usr/lib/systemd/system
-sudo cp slurm-23.11.5/etc/slurmctld.service /etc/systemd/system
-
-sudo cp slurm-23.11.5/etc/slurmd.service $SCHEDROOT/slurm/etc
+sudo cp slurm-23.11.5/etc/slurmctld.service /usr/lib/systemd/system/
+sudo cp slurm-23.11.5/etc/slurmctld.service /etc/systemd/system/
+sudo cp slurm-23.11.5/etc/slurmdbd.service /etc/systemd/system/
+sudo cp slurm-23.11.5/etc/slurmd.service $SCHEDROOT/slurm/etc/
 
 sudo systemctl enable slurmctld
 sudo systemctl start slurmctld
