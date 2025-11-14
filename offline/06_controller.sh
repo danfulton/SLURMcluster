@@ -60,8 +60,6 @@ sudo cp slurm.conf cgroup.conf gres.conf $SCHEDROOT/slurm/etc
 
 sudo mkdir /var/spool/slurmctld
 sudo chown slurm:slurm /var/spool/slurmctld
-sudo touch /var/log/slurmctld.log
-sudo chown slurm:slurm /var/log/slurmctld.log
 
 sudo cp slurm-23.11.5/etc/slurmctld.service /usr/lib/systemd/system/
 sudo cp slurm-23.11.5/etc/slurmctld.service /etc/systemd/system/
