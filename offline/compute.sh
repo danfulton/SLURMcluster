@@ -21,8 +21,6 @@ sudo chown slurm:slurm /var/log/slurm
 sudo mkdir -p /var/spool/slurm
 sudo chown slurm:slurm /var/spool/slurm
 
-sudo touch /var/log/slurmd.log
-sudo chown slurm:slurm /var/log/slurmd.log
 sudo mkdir -p /var/spool/slurmd
 sudo chown slurm:slurm /var/spool/slurmd
 
