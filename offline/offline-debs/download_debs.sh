@@ -12,7 +12,7 @@ wget https://uk.ports.ubuntu.com/ubuntu-ports/pool/main/libe/libevent/libevent-e
 wget https://uk.ports.ubuntu.com/ubuntu-ports/pool/main/libe/libevent/libevent-openssl-2.1-7t64_2.1.12-stable-9ubuntu2_arm64.deb
 wget https://uk.ports.ubuntu.com/ubuntu-ports/pool/main/libe/libevent/libevent-pthreads-2.1-7t64_2.1.12-stable-9ubuntu2_arm64.deb
 wget http://ports.ubuntu.com/pool/universe/h/hwloc/libhwloc-dev_2.10.0-1build1_arm64.deb
-wget http://archive.ubuntu.com/ubuntu/pool/universe/h/hwloc/libhwloc15_2.10.0-1build1_amd64.deb
+wget http://ports.ubuntu.com/pool/universe/h/hwloc/libhwloc15_2.10.0-1build1_arm64.deb
 
 wget https://np.ports.ubuntu.com/pool/universe/m/munge/libmunge-dev_0.5.15-4build1_arm64.deb
 wget https://np.ports.ubuntu.com/pool/universe/m/munge/libmunge2_0.5.15-4build1_arm64.deb
@@ -32,3 +32,7 @@ wget http://ports.ubuntu.com/pool/main/a/apparmor/python3-libapparmor_4.0.1reall
 
 
 wget http://launchpadlibrarian.net/754274580/nfs-kernel-server_2.6.4-3ubuntu5.1_arm64.deb
+
+wget http://mirrors.kernel.org/ubuntu/pool/main/e/equivs/equivs_2.3.1_all.deb
+
+
