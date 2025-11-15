@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo mkdir -p /share
 
 nvmes=($(lsblk -o NAME,TYPE,MOUNTPOINTS | awk '
 {
@@ -37,4 +36,5 @@ sudo mkdir -p /share
 sudo mount /dev/md120 /share
 sudo chmod 1777 /share
 sudo bash -c 'echo "LABEL=share /share xfs defaults,nofail 0 2" >> /etc/fstab'
+sudo systemctl daemon-reload
 
