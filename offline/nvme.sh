@@ -38,7 +38,7 @@ echo "RAID pair 2: ${nvmes[3]} ${nvmes[4]}"
 grep -c md110 /proc/mdstat || sudo mdadm --create /dev/md110 --level 0 --raid-devices 2 /dev/${nvmes[1]} /dev/${nvmes[2]}
 grep -c resource_nvme /proc/mounts && sudo umount /mnt/resource_nvme
 sudo mkfs.xfs -f -L resourcenvme /dev/md110
-sudo mkdir /mnt/resource_nvme
+sudo mkdir -p /mnt/resource_nvme
 sudo chmod 1777 /mnt/resource_nvme
 grep -c resource_nvme /etc/fstab ||  sudo bash -c 'echo "LABEL=resourcenvme /mnt/resource_nvme xfs defaults,nofail 0 2" >> /etc/fstab'
 sudo systemctl daemon-reload
