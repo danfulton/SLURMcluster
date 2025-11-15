@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo mkdir /share
+sudo mkdir -p /share
 
 nvmes=($(lsblk -o NAME,TYPE,MOUNTPOINTS | awk '
 {
@@ -33,7 +33,7 @@ echo "RAID pair for nfs share: ${nvmes[0]} ${nvmes[1]} ${nvmes[2]}"
 
 sudo mdadm --create /dev/md120 --level 0 --raid-devices 3 /dev/${nvmes[0]} /dev/${nvmes[1]} /dev/${nvmes[2]}
 sudo mkfs.xfs -L share /dev/md120
-sudo mkdir /share
+sudo mkdir -p /share
 sudo mount /dev/md120 /share
 sudo chmod 1777 /share
 sudo bash -c 'echo "LABEL=share /share xfs defaults,nofail 0 2" >> /etc/fstab'
