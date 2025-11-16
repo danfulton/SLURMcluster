@@ -15,7 +15,8 @@ sudo chown -R munge:munge /var/log/munge
 sudo chown -R munge:munge /etc/munge
 sudo chown -R munge:munge /var/lib/munge
 sudo systemctl start munge
-sudo systemctl status munge
+sudo systemctl status munge --no-pager
+sleep 8
 sudo chown -R munge:munge /var/run/munge
 
 sudo mungekey --create --force
@@ -53,6 +54,11 @@ sudo mkdir -p /var/log/slurm
 sudo chown slurm:slurm /var/log/slurm
 sudo mkdir -p /var/spool/slurm
 sudo chown slurm:slurm /var/spool/slurm
+sudo mkdir -p $SCHEDROOT/slurm/etc/slurmctld_state
+sudo chown slurm:slurm $SCHEDROOT/slurm/etc/slurmctld_state
+sudo chmod -R 755 $SCHEDROOT/slurm/etc/slurmctld_state 
+
+# setup slurmdbd conf here too
 
 sed -i -E "s/^SlurmctldHost.*/SlurmctldHost=$(hostname)/" slurm.conf
 #sudo cp slurm.conf gres.conf cgroup.conf $SCHEDROOT/slurm/etc
@@ -68,7 +74,8 @@ sudo cp slurm-23.11.5/etc/slurmd.service $SCHEDROOT/slurm/etc/
 
 sudo systemctl enable slurmctld
 sudo systemctl start slurmctld
-sudo systemctl status slurmctld
+sudo systemctl status slurmctld --no-pager
+sleep 8
 
 cp /share/sources/v0.20.0.tar.gz .
 tar xzf v0.20.0.tar.gz
