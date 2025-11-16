@@ -34,8 +34,9 @@ echo "Disk left untouched: ${nvmes[0]}"
 echo "RAID pair 1: ${nvmes[1]} ${nvmes[2]}"
 echo "RAID pair 2: ${nvmes[3]} ${nvmes[4]}"
 
-
-grep -c md110 /proc/mdstat || sudo mdadm --create /dev/md110 --level 0 --raid-devices 2 /dev/${nvmes[1]} /dev/${nvmes[2]}
+grep -c md110 /proc/mdstat \
+	|| sudo mdadm --create /dev/md110 --level 0 --raid-devices 2 /dev/${nvmes[1]} /dev/${nvmes[2]} \
+	|| sudo mdadm --create /dev/md110 --level 0 --raid-devices 2 /dev/${nvmes[3]} /dev/${nvmes[4]}
 grep -c resource_nvme /proc/mounts && sudo umount /mnt/resource_nvme
 sudo mkfs.xfs -f -L resourcenvme /dev/md110
 sudo mkdir -p /mnt/resource_nvme
