@@ -19,6 +19,9 @@ sudo systemctl status munge --no-pager
 sleep 8
 sudo chown -R munge:munge /var/run/munge
 
+sudo mkdir -p /var/run/slurm
+sudo chown -R slurm:slurm /var/run/slurm
+
 sudo mungekey --create --force
 sudo chown munge:munge /etc/munge/munge.key
 sudo systemctl enable munge
@@ -62,7 +65,8 @@ sudo chmod -R 755 $SCHEDROOT/slurm/etc/slurmctld_state
 
 sed -i -E "s/^SlurmctldHost.*/SlurmctldHost=$(hostname)/" slurm.conf
 #sudo cp slurm.conf gres.conf cgroup.conf $SCHEDROOT/slurm/etc
-sudo cp slurm.conf cgroup.conf gres.conf $SCHEDROOT/slurm/etc
+sudo cp slurm.conf cgroup.conf gres.conf slurmdbd.conf $SCHEDROOT/slurm/etc
+sudo chown slurm:slurm $SCHEDROOT/slurm/etc/*.conf
 
 sudo mkdir /var/spool/slurmctld
 sudo chown slurm:slurm /var/spool/slurmctld
