@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#sudo apt install nfs-kernel-server -y
+sudo apt install -y /share/offline-debs/nfs-kernel-server 
 sudo chown nobody:nogroup /share
 
 echo "/share    *(rw,sync,no_subtree_check,no_root_squash,insecure)" | sudo tee /etc/exports

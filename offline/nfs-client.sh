@@ -4,7 +4,7 @@ mount="/share"
 #place the IP address of the headnode here
 NFSSERVER=""
 
-if [ -z "$server" ]; then
+if [ -z "$NFSSERVER" ]; then
 	echo "NFS server address is not set!"
 	exit 1
 fi
