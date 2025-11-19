@@ -18,9 +18,6 @@ wget https://np.ports.ubuntu.com/pool/universe/m/munge/libmunge-dev_0.5.15-4buil
 wget https://np.ports.ubuntu.com/pool/universe/m/munge/libmunge2_0.5.15-4build1_arm64.deb
 wget https://np.ports.ubuntu.com/pool/universe/m/munge/munge_0.5.15-4build1_arm64.deb
 
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/arm64/libnvidia-container-tools_1.17.8-1_arm64.deb
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/arm64/libnvidia-container1_1.17.8-1_arm64.deb
-
 wget http://ports.ubuntu.com/pool/main/p/pam/libpam0g-dev_1.5.3-5ubuntu5.5_arm64.deb
 wget http://ports.ubuntu.com/pool/main/p/pam/libpam0g_1.5.3-5ubuntu5.5_arm64.deb
 
