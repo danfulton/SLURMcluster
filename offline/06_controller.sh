@@ -76,7 +76,9 @@ sudo cp slurm-23.11.5/etc/slurmctld.service /etc/systemd/system/
 sudo cp slurm-23.11.5/etc/slurmdbd.service /etc/systemd/system/
 sudo cp slurm-23.11.5/etc/slurmd.service $SCHEDROOT/slurm/etc/
 
+sudo systemctl enable slurmdbd
 sudo systemctl enable slurmctld
+sudo systemctl start slurmdbd
 sudo systemctl start slurmctld
 sudo systemctl status slurmctld --no-pager
 sleep 8
