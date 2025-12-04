@@ -2,56 +2,29 @@
 
 module load mpi/hpcx
 
+ARCH=$(uname -m)
+
 export SCHEDROOT=/share/sched
-mkdir -p $SCHEDROOT/slurm/23.11.5
 mkdir -p $SCHEDROOT/slurm/etc
+if [[ -e  /etc/slurm ]]; then
+    if [[ ! -L /etc/slurm ]]; then
+        sudo mv /etc/slurm /etc/slurm.bak
+        mkdir -p  ${SCHEDROOT}/slurm/etc
+        sudo ln -sT ${SCHEDROOT}/slurm/etc /etc/slurm
+    fi
+else
+    ${SCHEDROOT}/slurm/etc
+    sudo ln -sTf ${SCHEDROOT}/slurm/etc /etc/slurm
+fi
 
-sudo bash /share/offline-debs/install_packages-offline.sh
 
-sudo systemctl stop munge || true
-sudo groupmod -g 1111 munge
-sudo usermod -u 1111 -g 1111 munge
-sudo chown -R munge:munge /var/log/munge
-sudo chown -R munge:munge /etc/munge
-sudo chown -R munge:munge /var/lib/munge
 sudo systemctl start munge
 sudo systemctl status munge --no-pager
-sleep 8
-sudo chown -R munge:munge /var/run/munge
-
-sudo mkdir -p /var/run/slurm
-sudo chown -R slurm:slurm /var/run/slurm
-
 sudo mungekey --create --force
 sudo chown munge:munge /etc/munge/munge.key
 sudo systemctl enable munge
 sudo systemctl restart munge
 sudo cp /etc/munge/munge.key $SCHEDROOT/slurm/etc
-
-sudo mkdir -p $SCHEDROOT/pmix/v4
-cp /share/sources/pmix-4.2.9.tar.gz .
-tar xzf pmix-4.2.9.tar.gz 
-cd pmix-4.2.9
-./configure --prefix=$SCHEDROOT/pmix/v4
-sudo make -j install
-cd ..
-sudo rm -rf pmix-4.2.9
-
-cp /share/sources/slurm-23.11.5.tar.bz2 .
-tar xjf slurm-23.11.5.tar.bz2
-
-cd slurm-23.11.5/
-./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config
-make -j 90
-sudo make install
-cd ..
-
-echo 'export PATH=/share/sched/slurm/23.11.5/bin:$PATH' | sudo tee $SCHEDROOT/slurm/etc/slurm_path.sh
-#sudo unlink /etc/profile.d/99_slurm_path.sh
-sudo ln -s $SCHEDROOT/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
-
-getent group slurm >/dev/null || sudo addgroup --system --gid 986 slurm
-id -u slurm >/dev/null 2>&1 || sudo adduser  --system --uid 992  --gid 986  --disabled-login --disabled-password --no-create-home --gecos "" --shell /usr/sbin/nologin slurm
 
 sudo mkdir -p /var/log/slurm
 sudo chown slurm:slurm /var/log/slurm
@@ -60,43 +33,55 @@ sudo chown slurm:slurm /var/spool/slurm
 sudo mkdir -p $SCHEDROOT/slurm/etc/slurmctld_state
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/slurmctld_state
 sudo chmod -R 755 $SCHEDROOT/slurm/etc/slurmctld_state 
+sudo mkdir -p /var/spool/slurmd
+sudo chown slurm:slurm /var/spool/slurmd
+
 
 # setup slurmdbd conf here too
 
 sed -i -E "s/^SlurmctldHost.*/SlurmctldHost=$(hostname)/" slurm.conf
-#sudo cp slurm.conf gres.conf cgroup.conf $SCHEDROOT/slurm/etc
+sed -i "s:^AccountingStorageUser=slurm.*$:#AccountingStorageUser=slurm:" slurm.conf
+sed -i "s:PidFile=/var/run/slurm/slurmdbd.pid:PidFile=/var/run/slurmdbd/slurmdbd.pid:" slurmdbd.conf
+echo 'SLURMCTLD_OPTIONS=" -i -c"' | sudo tee /etc/default/slurmctld
 sudo cp slurm.conf cgroup.conf gres.conf slurmdbd.conf $SCHEDROOT/slurm/etc
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/*.conf
 
 sudo mkdir /var/spool/slurmctld
 sudo chown slurm:slurm /var/spool/slurmctld
+sudo cp -fv /usr/share/enroot/hooks.d/50-slurm-pmi.sh /usr/share/enroot/hooks.d/50-slurm-pytorch.sh /etc/enroot/hooks.d
 
-sudo cp slurm-23.11.5/etc/slurmctld.service /usr/lib/systemd/system/
-sudo cp slurm-23.11.5/etc/slurmctld.service /etc/systemd/system/
-sudo cp slurm-23.11.5/etc/slurmdbd.service /etc/systemd/system/
-sudo cp slurm-23.11.5/etc/slurmd.service $SCHEDROOT/slurm/etc/
-
-sudo systemctl enable slurmdbd
+sudo systemctl enable slurmdbd 
 sudo systemctl enable slurmctld
 sudo systemctl start slurmdbd
-sudo systemctl start slurmctld
+sudo systemctl start slurmctld 
 sudo systemctl status slurmctld --no-pager
 sleep 8
 
-cp /share/sources/v0.20.0.tar.gz .
-tar xzf v0.20.0.tar.gz
-cd pyxis-0.20.0
-sudo CFLAGS='-I/share/sched/slurm/23.11.5/include' prefix=$SCHEDROOT/slurm/23.11.5 make install
-cd ..
+echo 'SLURMCTLD_OPTIONS="-i"' | sudo tee  /etc/default/slurmctld
 
 sudo mkdir -p $SCHEDROOT/slurm/etc/plugstack.conf.d
 echo 'include /share/sched/slurm/etc/plugstack.conf.d/*' | sudo tee $SCHEDROOT/slurm/etc/plugstack.conf
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf
-echo 'required /share/sched/slurm/23.11.5/lib/slurm/spank_pyxis.so' | sudo tee $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
+echo "required /usr/lib/${ARCH}-linux-gnu/slurm/spank_pyxis.so" | sudo tee $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 
 sudo cp prolog.sh $SCHEDROOT/slurm/etc
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/prolog.sh
 sudo chmod 755 $SCHEDROOT/slurm/etc/prolog.sh
-
 sudo cp $PWD/apparmor.profile /share/apparmor.profile
+
+sleep 5
+sudo sacctmgr -i add account debug cluster=NDv6 && sudo sacctmgr -i add user azhpcuser account=debug
+
+sudo cp /share/apparmor.profile /etc/apparmor.d/enroot
+sudo aa-complain /usr/bin/enroot-nsenter
+sudo aa-complain /etc/apparmor.d/*
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee -a /etc/sysctl.d/99-enroot.conf
+sudo apparmor_parser -R /etc/apparmor.d/enroot
+
+sudo systemctl enable slurmd
+sudo systemctl start slurmd
+./fix-user-namespace.sh
+
+

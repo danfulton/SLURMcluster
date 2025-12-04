@@ -62,7 +62,7 @@ else
     if sudo blkid /dev/md110 | grep -q "TYPE="; then
         echo "Filesystem already exists on /dev/md110, skipping mkfs"
     else
-        sudo mkfs.xfs -L resourcevnme /dev/md110
+        sudo mkfs.xfs -L resourcenvme /dev/md110
         echo "Filesystem created on /dev/md110"
     fi
     
@@ -74,7 +74,7 @@ else
 
     # Add to fstab if not already present
     if ! grep -q "/mnt/resource_nvme" /etc/fstab; then
-        sudo echo "LABEL=resourcevnme /mnt/resource_nvme xfs defaults 0 0" | sudo tee -a /etc/fstab
+        sudo echo "LABEL=resourcenvme /mnt/resource_nvme xfs defaults 0 0" | sudo tee -a /etc/fstab
         echo "Added /dev/md110 to /etc/fstab"
     else
         echo "/dev/md110 is already in /etc/fstab, skipping"
