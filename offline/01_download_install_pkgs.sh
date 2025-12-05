@@ -31,11 +31,11 @@ cd /share/build
 tar -xf  /share/sources/v0.20.0.tar.gz
 tar -xf  /share/sources/slurm-25.11.0.tar.bz2
 cd slurm-25.11.0
-sudo mk-build-deps -i debian/control
-
+export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-j 90 --preserve-env"
 ARCH=$(uname -m) 
-sed -i "s|dh_auto_configure -- --sysconfdir=/etc/slurm --disable-debug --with-mysql_config --with-slurmrestd --with-pmix --enable-pam --with-pam_dir=/usr/lib/\$(DEB_HOST_MULTIARCH)/security --with-systemdsystemunitdir=/lib/systemd/system/ SUCMD=/bin/su SLEEP_CMD=/bin/sleep$|dh_auto_configure -- --sysconfdir=/etc/slurm --disable-debug --with-mysql_config --with-slurmrestd --with-pmix=/usr/lib/${ARCH}-linux-gnu/pmix2 --enable-pam --with-pam_dir=/usr/lib/\$(DEB_HOST_MULTIARCH)/security --with-systemdsystemunitdir=/lib/systemd/system/ SUCMD=/bin/su SLEEP_CMD=/bin/sleep  --disable-x11 --with-json --with-jwt --with-http-parser --with-yaml --with-hdf5=yes --with-lz4 --with-hwloc --with-nvml --with-lua --with-munge --with-libcurl|" debian/rules
-debuild -b -uc -us
+sed -i "s|dh_auto_configure -- --sysconfdir=/etc/slurm --disable-debug --with-mysql_config --with-slurmrestd --with-pmix --enable-pam --with-pam_dir=/usr/lib/\$(DEB_HOST_MULTIARCH)/security --with-systemdsystemunitdir=/lib/systemd/system/ SUCMD=/bin/su SLEEP_CMD=/bin/sleep$|dh_auto_configure -- --sysconfdir=/etc/slurm --disable-debug --with-mysql_config --with-slurmrestd --with-pmix=/usr/lib/${ARCH}-linux-gnu/pmix2 --enable-pam --with-pam_dir=/usr/lib/\$(DEB_HOST_MULTIARCH)/security --with-systemdsystemunitdir=/lib/systemd/system/ SUCMD=/bin/su SLEEP_CMD=/bin/sleep  --disable-x11 --with-json --with-jwt --with-http-parser --with-yaml --with-hdf5=yes --with-lz4 --with-hwloc --with-nvml --with-lua --with-munge --with-libcurl |" debian/rules
+sudo mk-build-deps -i debian/control
+debuild -b -uc -us -j 90
 mkdir -p /share/offline-debs/slurm-local-build/
 cp ../slurm*.deb /share/offline-debs/slurm-local-build/
 cd /share/offline-debs/slurm-local-build/
