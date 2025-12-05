@@ -69,8 +69,8 @@ sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf
 echo "required /usr/lib/${ARCH}-linux-gnu/slurm/spank_pyxis.so" | sudo tee $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 
-~/SLURMcluster/offline/tune-gres-conf.sh hostfile.txt
-~/SLURMcluster/offline/tune-slurm-conf.sh hostfile.txt
+./tune-gres-conf.sh ./hostfile.txt
+./tune-slurm-conf.sh ./hostfile.txt
 
 sudo chown -R slurm:slurm $SCHEDROOT/slurm
 
