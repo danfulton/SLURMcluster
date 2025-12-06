@@ -32,7 +32,7 @@ apt download dh-exec gir1.2-atk-1.0 gir1.2-freedesktop gir1.2-freedesktop-dev gi
 mkdir -p  /share/offline-debs/misc
 cd /share/offline-debs/misc
 
-apt download apparmor-utils clustershell libpam0g-dev libpmix-bin libpmix-dev libpmix2t64 parallel python3-apparmor python3-clustershell libevent-dev libevent-extra-2.1-7t64 libevent-openssl-2.1-7t64 libevent-pthreads-2.1-7t64 python3-libapparmor ncal equivs libdbus-1-dev bsdmainutils bats
+apt download apparmor-utils clustershell libpam0g-dev libpmix-bin libpmix-dev libpmix2t64 parallel python3-apparmor python3-clustershell libevent-dev libevent-extra-2.1-7t64 libevent-openssl-2.1-7t64 libevent-pthreads-2.1-7t64 python3-libapparmor ncal equivs libdbus-1-dev bsdmainutils bats libhwloc-dev
 
 arch=$(dpkg --print-architecture)
 curl -fSsL -O https://github.com/NVIDIA/enroot/releases/download/v4.0.1/enroot_4.0.1-1_${arch}.deb
