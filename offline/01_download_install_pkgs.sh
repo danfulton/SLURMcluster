@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-
+#set -euo pipefail breaks changing to the script_dir if read after a change of directory.
+script_dir= "$(dirname "$(readlink -f "$0")")"
 
 
 module load mpi/hpcx
@@ -54,8 +55,7 @@ cp ../nvslurm-plugin-pyxis*.deb /share/offline-debs/slurm/
 sudo apt -y install /share/offline-debs/slurm/nvslurm-plugin-pyxis*.deb
 
 
-cd "$(dirname "$(readlink -f "$0")")"
-echo $(pwd)
+cd ${script_dir}
 sudo mkdir -p /var/log/slurm
 sudo chown -R slurm:slurm /var/log/slurm
 sudo mkdir -p /var/spool/slurm
