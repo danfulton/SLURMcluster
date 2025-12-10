@@ -58,6 +58,11 @@ sed -i "s:^#JobCompHost=:JobCompHost=jobcomp/filetxt:" slurm.conf
 sed -i "s:^#JobCompLoc=:JobCompLoc=${SCHEDROOT}/jobcomp.d/:" slurm.conf
 sed -i "s:^SwitchType=switch/none:SwitchType=switch/nvidia_imex:" slurm.conf
 
+
+if ! grep -q "MetricsType" slurm.conf; then
+     echo "MetricsType=metrics/openmetrics" >> slurm.conf
+fi
+
 if ! grep -q "PartitionName" slurm.conf; then
      echo "PartitionName=debug Nodes=ALL Default=YES MaxTime=INFINITE State=UP" >> slurm.conf
 fi
