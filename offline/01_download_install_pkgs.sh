@@ -2,7 +2,7 @@
 
 set -euo pipefail
 #set -euo pipefail breaks changing to the script_dir if read after a change of directory.
-script_dir= "$(dirname "$(readlink -f "$0")")"
+script_dir=$(dirname "$(readlink -f "$0")")
 
 
 module load mpi/hpcx
@@ -19,8 +19,8 @@ else
     sudo ln -sTf ${SCHEDROOT}/slurm/etc /etc/slurm
 fi
 
-./offline-debs/download_debs.sh
-./sources/download_sources.sh
+${script_dir}/offline-debs/download_debs.sh
+${script_dir}/sources/download_sources.sh
 
 sudo apt -y install /share/offline-debs/mariadb/*.deb
 sudo apt -y install /share/offline-debs/misc/*.deb
@@ -69,8 +69,8 @@ sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf
 echo "required /usr/lib/${ARCH}-linux-gnu/slurm/spank_pyxis.so" | sudo tee $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/plugstack.conf.d/pyxis.conf
 
-./tune-gres-conf.sh ./hostfile.txt
-./tune-slurm-conf.sh ./hostfile.txt
+${script_dir}/tune-gres-conf.sh ${script_dir}/hostfile.txt
+${script_dir}/tune-slurm-conf.sh ${script_dir}/hostfile.txt
 
 sudo chown -R slurm:slurm $SCHEDROOT/slurm
 
