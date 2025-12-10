@@ -17,8 +17,13 @@ else
     sudo ln -sTf ${SCHEDROOT}/slurm/etc /etc/slurm
 fi
 
+slurm_version=$(ls /share/offline-debs/slurm-local-build/ | grep slurm |awk -F_ '{print $2}' | sort -u)
+slurm_installed_version=$(dpkg -l slurm-smd\* | grep slurm | awk '{print $3}' | sort -u)
+
+if [[ $slurm_version != $slurm_installed_version ]]; then
 sudo apt -y install /share/offline-debs/slurm/*.deb   /share/offline-debs/misc/*.deb
 sudo apt -y install /share/offline-debs/slurm-local-build/*.deb 
+fi
 
 sudo systemctl stop munge || true
 #sudo groupmod -g 1111 munge
