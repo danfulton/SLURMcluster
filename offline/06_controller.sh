@@ -90,6 +90,7 @@ sudo apparmor_parser -R /etc/apparmor.d/enroot
 sudo systemctl enable slurmd
 sudo systemctl start slurmd
 sudo scontrol reconfigure
+sudo scontrol update nodename=$(hostname -s) state=drain reason="AICE:slurmctld node"
 ./fix-user-namespace.sh
 
 
