@@ -41,4 +41,15 @@ if [ ! -c /dev/nvidia-uvm ]; then
     fi
 fi
 
+#  m=$(grep nvidia-caps-imex-channels /proc/devices | awk '"'"'{print $1}'"'"') && sudo mknod /dev/nvidia-caps-imex-channels/channel0 c "$m" 0
+if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
+	echo "IMEX device not created!."
+	Major_Device_num=$(grep nvidia-caps-imex-channels /proc/devices | awk '{print $1}')
+	sudo mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
+	if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
+		echo "ERROR: NVIDIA-IMEX not configured correctly"
+		exit 1
+	fi
+fi
+
 exit 0
