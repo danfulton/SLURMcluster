@@ -79,6 +79,8 @@ sudo cp $PWD/apparmor.profile /share/apparmor.profile
 
 sleep 5
 sudo sacctmgr -i add account debug cluster=NDv6 && sudo sacctmgr -i add user azhpcuser account=debug
+sudo sacctmgr -i add account AICE Description="AICE Testing" Organization="AICE"
+sudo sacctmgr -i add user azhpcuser account=AICE
 
 sudo cp /share/apparmor.profile /etc/apparmor.d/enroot
 sudo aa-complain /usr/bin/enroot-nsenter
