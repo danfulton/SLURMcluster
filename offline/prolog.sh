@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Make sure /mnt/tmpfs is mounted
-mount | grep resource || mount /mnt/resource
+mount | grep resource || mount /mnt/resource_nvme
 
 ## Enroot support
 # Exit if enroot is not in the image
@@ -45,7 +45,9 @@ fi
 if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
 	echo "IMEX device not created!."
 	Major_Device_num=$(grep nvidia-caps-imex-channels /proc/devices | awk '{print $1}')
-	sudo mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
+	mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
+	chmod ugo+rw /dev/nvidia-caps-imex-channels/channel0
+	chown azhpcuser:azhpcuser /dev/nvidia-caps-imex-channels/channel0
 	if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
 		echo "ERROR: NVIDIA-IMEX not configured correctly"
 		exit 1
