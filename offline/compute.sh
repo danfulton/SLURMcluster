@@ -53,6 +53,14 @@ sudo chown slurm:slurm /var/spool/slurm
 sudo mkdir -p /var/spool/slurmd
 sudo chown slurm:slurm /var/spool/slurmd
 
+sudo mkdir -p /var/run/slurm
+sudo chown -R slurm:slurm /var/run/slurm
+
+sudo chown -R slurm:slurm /var/log/slurm
+sudo chmod 755 /var/log/slurm
+sudo chmod 755 /var/log/slurm/*
+
+#sudo unlink /etc/profile.d/99_slurm_path.sh
 #sudo unlink /etc/profile.d/99_slurm_path.sh
 #sudo ln -sf $SCHEDROOT/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
 
