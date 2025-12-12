@@ -54,8 +54,8 @@ sudo chown slurm:slurm ${SCHEDROOT}/jobcomp.d/
 
 sed -i "s/^SlurmctldHost=.*/SlurmctldHost=$HOSTNAME/" slurm.conf
 sed -i "s/^AccountingStorageHost=.*/AccountingStorageHost=$HOSTNAME/" slurm.conf
-sed -i "s:^#JobCompHost=:JobCompHost=jobcomp/filetxt:" slurm.conf
-sed -i "s:^#JobCompLoc=:JobCompLoc=${SCHEDROOT}/jobcomp.d/:" slurm.conf
+sed -i "s:^JobCompType=.*:JobCompType=jobcomp/filetxt:" slurm.conf
+sed -i "s:^#JobCompLoc=:JobCompLoc=${SCHEDROOT}/jobcomp.d/${powercells_list}_jobdata:" slurm.conf
 #sed -i "s:^SwitchType=switch/none:SwitchType=switch/nvidia_imex:" slurm.conf
 
 
