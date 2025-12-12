@@ -9,6 +9,7 @@ mount | grep resource || mount /mnt/resource_nvme
 
 mkdir -pv /run/enroot /mnt/resource_nvme/{enroot-cache,enroot-data,enroot-temp}
 chmod -v 777 /run/enroot /mnt/resource_nvme/{enroot-cache,enroot-data,enroot-temp}
+chmod -vR 777 /run/enroot 
 
 ENROOT_CONF=/etc/enroot/enroot.conf
 egrep '^ENROOT_RUNTIME_PATH' ${ENROOT_CONF} || echo 'ENROOT_RUNTIME_PATH /run/enroot/user-$(id -u)' >> ${ENROOT_CONF}
@@ -52,6 +53,12 @@ if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
 		echo "ERROR: NVIDIA-IMEX not configured correctly"
 		exit 1
 	fi
+fi
+
+docker_active=$(systemctl is-active docker.service)
+if [[ ${docker_active} != "active" ]]
+   then
+	systemctl restart docker
 fi
 
 exit 0

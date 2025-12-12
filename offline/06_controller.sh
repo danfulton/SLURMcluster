@@ -49,7 +49,7 @@ sed -i -E "s/^SlurmctldHost.*/SlurmctldHost=$(hostname)/" slurm.conf
 sed -i "s:^AccountingStorageUser=slurm.*$:#AccountingStorageUser=slurm:" slurm.conf
 sed -i "s:PidFile=/var/run/slurm/slurmdbd.pid:PidFile=/var/run/slurmdbd/slurmdbd.pid:" slurmdbd.conf
 echo 'SLURMCTLD_OPTIONS=" -i -c"' | sudo tee /etc/default/slurmctld
-sudo cp slurm.conf cgroup.conf gres.conf slurmdbd.conf topology.yaml $SCHEDROOT/slurm/etc/
+sudo cp slurm.conf cgroup.conf gres.conf slurmdbd.conf topology.txt $SCHEDROOT/slurm/etc/
 sudo cp nodegroups.d/*.conf $SCHEDROOT/slurm/etc/nodegroups.d/
 sudo chown slurm:slurm $SCHEDROOT/slurm/etc/*.conf  $SCHEDROOT/slurm/etc/nodegroups.d/*.conf
 
@@ -89,10 +89,10 @@ sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee -a /etc/sysctl.d/99-enroot.conf
 sudo apparmor_parser -R /etc/apparmor.d/enroot
 
-sudo systemctl enable slurmd
-sudo systemctl start slurmd
+#sudo systemctl enable slurmd
+#sudo systemctl start slurmd
 sudo scontrol reconfigure
-sudo scontrol update nodename=$(hostname -s) state=drain reason="AICE:slurmctld node"
-./fix-user-namespace.sh
+#sudo scontrol update nodename=$(hostname -s) state=drain reason="AICE:slurmctld node"
+#./fix-user-namespace.sh
 
 

@@ -39,6 +39,8 @@ sudo chown munge:munge /etc/munge/munge.key
 sudo chmod 400 /etc/munge/munge.key
 sudo systemctl enable munge
 sudo systemctl restart munge
+sudo systemctl enable docker
+sudo systemctl restart docker
 
 #getent group slurm >/dev/null || sudo addgroup --system --gid 986 slurm
 #id -u slurm >/dev/null 2>&1 || sudo adduser  --system --uid 992  --gid 986  --disabled-login --disabled-password --no-create-home --gecos "" --shell /usr/sbin/nologin slurm

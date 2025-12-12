@@ -85,11 +85,11 @@ if [[ $powercellcount -eq 1 ]]
   tree:
     switches:
       - switch: ${powercells_list}
-        children: ${row_list}" > topology.yaml
+        children: ${row_list}" > topology.txt
     for row in $(echo ${row_list} | sed 's:,: :g')
         do
             rack_list=$( grep -f ${input_file} /etc/hosts | grep -v '^\s*#' | grep ${datacenter} | grep ${powercells_list} | grep ${row} | awk -F_ '{print $2}' | sort -u | tr -d '\r' | paste -sd, )
-            echo -e "      - switch: ${row}\n        children: ${rack_list}" >> topology.yaml
+            echo -e "      - switch: ${row}\n        children: ${rack_list}" >> topology.txt
     done
 elif [[ $powercellcount -gt 1 ]]
     then
@@ -100,16 +100,16 @@ elif [[ $powercellcount -gt 1 ]]
   tree:
     switches:
       - switch: ${datacenter}
-        children: ${powercells_list}" > topology.yaml
+        children: ${powercells_list}" > topology.txt
 
       for powercell in $(echo $powercells_list | sed 's:,: :g')
          do
 		 PC_row_list=$( grep -f ${input_file}  /etc/hosts | grep -v '^\s*#' | grep ${datacenter} | grep ${powercell} | awk '{print $3}' | sed 's:[0-9]\|-: :g' | awk '{print $5}' | sort -u | tr -d '\r' | paste -sd, )
-		 echo -e "      - switch: ${powercell}\n        children: ${PC_row_list}"  >> topology.yaml
+		 echo -e "      - switch: ${powercell}\n        children: ${PC_row_list}"  >> topology.txt
 		 for row in $(echo ${PC_row_list}  | sed 's:,: :g')
                      do
             		 rack_list=$( grep -f ${input_file}  /etc/hosts | grep -v '^\s*#' | grep ${datacenter} | grep ${powercell} | grep ${row} | awk -F_ '{print $2}' | sort -u | tr     -d '\r' | paste -sd,)
-			 echo -e "      - switch: ${row}\n        children: ${rack_list}" >> topology.yaml
+			 echo -e "      - switch: ${row}\n        children: ${rack_list}" >> topology.txt
     		 done
 
       
@@ -125,14 +125,15 @@ for rack in $(grep -f ${input_file} /etc/hosts | awk '{print $3}' | grep ^ATL | 
    do
 	rackindex=$(get_rack_index ${rack})
 	powercell=$(grep $rack /etc/hosts | awk '{print $3}' | sed 's:_:-:g' | awk -F- '{print $2}' | sort -u )
+	cluster=$(grep $rack /etc/hosts | awk '{print $4}' | awk -F- '{print $3}' | sort -u)
 	PC_short=$(grep $rack /etc/hosts | awk '{print $4}' | awk -F- '{print $2}' | sort -u)
 	nodegroup=$(grep $rack /etc/hosts | awk '{print $2}' |grep -v '^\s*#' | tr -d '\r' | paste -sd, )
 	row=$(echo $rack | sed 's:[0-9]\|-: :g' | awk '{print $NF}')
-	printf "NodeName=${nodegroup} CPUs=144 Boards=1 SocketsPerBoard=2 CoresPerSocket=72 ThreadsPerCore=1 RealMemory=1635214 State=UNKNOWN Gres=gpu:4 Features=\"rack=${rack},PC=${powercell},DC=${datacenter},row=${row},nodegroup=${PC_short}_${rackindex}\"\n" >> nodegroups.d/${powercell}.conf
+	printf "NodeName=${nodegroup} CPUs=144 Boards=1 SocketsPerBoard=2 CoresPerSocket=72 ThreadsPerCore=1 RealMemory=1635214 State=UNKNOWN Gres=gpu:4 Features=\"${rack},${powercell},${datacenter},${row},${PC_short}_${rackindex}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${powercell}-${rackindex} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${PC_short}-${rackindex} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${rack} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
-	printf "      - switch: ${rack}\n        nodes: ${nodegroup}\n" >> topology.yaml
+	printf "      - switch: ${rack}\n        nodes: ${nodegroup}\n" >> topology.txt
 
 done
 
@@ -147,29 +148,29 @@ echo "- topology: ${blockname}_block
   cluster_default: false
   block:
     block_sizes:
-      - 18
-    blocks:" >>  topology.yaml
+      - 2,4,8,16,32,64,128,256
+    blocks:" >>  topology.txt
 
 for rack in $(grep -f ${input_file} /etc/hosts | awk '{print $3}' | grep ^ATL | awk -F_ '{print $2 }' | sort -u)
    do
         rackindex=$(get_rack_index ${rack})
         powercell=$(grep $rack /etc/hosts | awk -F- '{print $3}' | sort -u)
         nodegroup=$(grep $rack /etc/hosts | awk '{print $2}' |grep -v '^\s*#' | tr -d '\r' | paste -sd, )
-	printf "      - block:  ${powercell}_${rackindex}\n        nodes: ${nodegroup}\n" >> topology.yaml
+	printf "      - block:  ${powercell}_${rackindex}\n        nodes: ${nodegroup}\n" >> topology.txt
 
 done
 
 echo "- topology: ${blockname}_flat
   cluster_default: true
-  flat: true"  >>  topology.yaml
+  flat: true"  >>  topology.txt
 
  
-if ! grep -q "PartitionName=block" slurm.conf; then
-     echo "PartitionName=block Nodes=ALL Default=NO Hidden=YES MaxTime=INFINITE State=UP Topology=${blockname}_block" >> slurm.conf
-fi
-if ! grep -q "PartitionName=tree" slurm.conf; then
-     echo "PartitionName=tree Nodes=ALL Default=NO Hidden=YES MaxTime=INFINITE State=UP Topology=${topo_tree}" >> slurm.conf
-fi
+#if ! grep -q "PartitionName=block" slurm.conf; then
+#     echo "PartitionName=block Nodes=ALL Default=NO Hidden=YES MaxTime=INFINITE State=UP Topology=${blockname}_block" >> slurm.conf
+#fi
+#if ! grep -q "PartitionName=tree" slurm.conf; then
+#     echo "PartitionName=tree Nodes=ALL Default=NO Hidden=YES MaxTime=INFINITE State=UP Topology=${topo_tree}" >> slurm.conf
+#fi
 
 sudo mkdir -p ${SCHEDROOT}/nodegroups.d/
 sudo chown slurm:slurm ${SCHEDROOT}/nodegroups.d/
