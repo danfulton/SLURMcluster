@@ -70,14 +70,12 @@ sudo cp -fv /usr/share/enroot/hooks.d/50-slurm-pmi.sh /usr/share/enroot/hooks.d/
 #sudo sed -i '/set -eu/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pytorch.sh
 #sudo sed -i '/shopt -s lastpipe/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pmi.sh
 
-#sudo cp /share/apparmor.profile /etc/apparmor.d/enroot
+sudo cp /share/apparmor.profile /etc/apparmor.d/enroot
 sudo aa-complain /usr/bin/enroot-nsenter
 sudo aa-complain /etc/apparmor.d/*
 sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee -a /etc/sysctl.d/99-enroot.conf
-#sudo apparmor_parser -R /etc/apparmor.d/enroot
-sudo systemctl stop apparmor
-sudo systemctl disable apparmor
+sudo apparmor_parser -R /etc/apparmor.d/enroot
 
 #sudo mv /etc/enroot/hooks.d/98-nvidia.sh /etc/enroot/hooks.d/98-nvidia.sh.disabled
 #
