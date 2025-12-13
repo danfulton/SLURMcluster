@@ -129,7 +129,7 @@ for rack in $(grep -f ${input_file} /etc/hosts | awk '{print $3}' | grep ^ATL | 
 	PC_short=$(grep $rack /etc/hosts | awk '{print $4}' | awk -F- '{print $2}' | sort -u)
 	nodegroup=$(grep $rack /etc/hosts | awk '{print $2}' |grep -v '^\s*#' | tr -d '\r' | paste -sd, )
 	row=$(echo $rack | sed 's:[0-9]\|-: :g' | awk '{print $NF}')
-	printf "NodeName=${nodegroup} CPUs=144 Boards=1 SocketsPerBoard=2 CoresPerSocket=72 ThreadsPerCore=1 RealMemory=1635214 State=UNKNOWN Gres=gpu:4 Features=\"${rack},${powercell},${datacenter},${row},${PC_short}_${rackindex}\"\n" >> nodegroups.d/${powercell}.conf
+	printf "NodeName=${nodegroup} CPUs=144 Boards=1 SocketsPerBoard=2 CoresPerSocket=72 ThreadsPerCore=1 RealMemory=1635214 State=UNKNOWN Gres=gpu:4 Features=\"${rack},${powercell},${datacenter},${cluster},${row},${PC_short}_${rackindex}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${powercell}-${rackindex} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${PC_short}-${rackindex} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
 	printf "NodeSet=${rack} Feature=\"rack=${rack}\"\n" >> nodegroups.d/${powercell}.conf
