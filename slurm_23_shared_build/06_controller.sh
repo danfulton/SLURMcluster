@@ -58,6 +58,9 @@ sudo chown slurm:slurm /var/spool/slurmctld
 sudo cp -fv /usr/share/enroot/hooks.d/50-slurm-pmi.sh /usr/share/enroot/hooks.d/50-slurm-pytorch.sh /etc/enroot/hooks.d
 
 
+echo 'export PATH=/share/sched/slurm/23.11.5/bin:/share/sched/slurm/23.11.5/sbin:$PATH' | sudo tee /share/sched/slurm/etc/slurm_path.sh
+unlink /etc/profile.d/99_slurm_path.sh
+sudo ln -sf /share/sched/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
 
 sudo systemctl enable slurmdbd 
 sudo systemctl enable slurmctld
