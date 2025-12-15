@@ -72,7 +72,7 @@ cd ..
 cp /share/sources/slurm-23.11.5.tar.bz2 .
 tar xjf slurm-23.11.5.tar.bz2
 cd slurm-23.11.5/
-./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config --with-hwloc --enable-pam --disable-x11  --with-json --with-yaml --with-nvml  --with-lua --with-munge --with-libcurl --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx
+./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config --with-hwloc --enable-pam --disable-x11  --with-json --with-yaml --with-nvml  --with-lua --with-munge --with-libcurl --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx --with bash-completion
 make -j 90
 sudo make install
 sudo cp etc/slurmctld.service /etc/systemd/system/
