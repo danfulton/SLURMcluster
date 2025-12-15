@@ -1,0 +1,8 @@
+hostfile.txt
+*hostfile*
+slurm_db_password.txt
+*hostsfile*
+down_unhealthy_nodes.txt
+nodegroups.d
+rack_enumeration_list.txt
+topology.*
