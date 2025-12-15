@@ -98,9 +98,9 @@ fi
 if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
         echo "IMEX device not created!."
         Major_Device_num=$(grep nvidia-caps-imex-channels /proc/devices | awk '{print $1}')
-        mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
-        chmod ugo+rw /dev/nvidia-caps-imex-channels/channel0
-        chown azhpcuser:azhpcuser /dev/nvidia-caps-imex-channels/channel0
+        sudo mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
+        sudo chmod ugo+rw /dev/nvidia-caps-imex-channels/channel0
+        sudo chown azhpcuser:azhpcuser /dev/nvidia-caps-imex-channels/channel0
         if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
                 echo "ERROR: NVIDIA-IMEX not configured correctly"
                 exit 1
@@ -110,6 +110,6 @@ fi
 docker_active=$(systemctl is-active docker.service)
 if [[ ${docker_active} != "active" ]]
    then
-	systemctl enable docker
-        systemctl restart docker
+	sudo systemctl enable docker
+        sudo systemctl restart docker
 fi
