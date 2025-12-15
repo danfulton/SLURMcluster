@@ -76,8 +76,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable slurmd
 sudo systemctl restart slurmd
 sudo cp -fv /usr/share/enroot/hooks.d/50-slurm-pmi.sh /usr/share/enroot/hooks.d/50-slurm-pytorch.sh /etc/enroot/hooks.d
-#sudo sed -i '/set -eu/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pytorch.sh
-#sudo sed -i '/shopt -s lastpipe/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pmi.sh
+sudo sed -i '/set -eu/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pytorch.sh
+sudo sed -i '/shopt -s lastpipe/a export PATH=/share/sched/slurm/23.11.5/bin:$PATH' /etc/enroot/hooks.d/50-slurm-pmi.sh
 
 sudo cp /share/apparmor.profile /etc/apparmor.d/enroot
 sudo aa-complain /usr/bin/enroot-nsenter
