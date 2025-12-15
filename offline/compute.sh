@@ -91,3 +91,24 @@ sudo modprobe nvidia_peermem
 if [[ ! -e /etc/modules-load.d/nvidia_peermem.conf ]]; then
 echo 'nvidia_peermem' | sudo tee /etc/modules-load.d/nvidia_peermem.conf
 fi
+
+
+#  m=$(grep nvidia-caps-imex-channels /proc/devices | awk '"'"'{print $1}'"'"') && sudo mknod /dev/nvidia-caps-imex-channels/channel0 c "$m" 0
+if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
+        echo "IMEX device not created!."
+        Major_Device_num=$(grep nvidia-caps-imex-channels /proc/devices | awk '{print $1}')
+        mknod /dev/nvidia-caps-imex-channels/channel0 c "${Major_Device_num}" 0
+        chmod ugo+rw /dev/nvidia-caps-imex-channels/channel0
+        chown azhpcuser:azhpcuser /dev/nvidia-caps-imex-channels/channel0
+        if [ ! -c /dev/nvidia-caps-imex-channels/channel0 ]; then
+                echo "ERROR: NVIDIA-IMEX not configured correctly"
+                exit 1
+        fi
+fi
+
+docker_active=$(systemctl is-active docker.service)
+if [[ ${docker_active} != "active" ]]
+   then
+	systemctl enable docker
+        systemctl restart docker
+fi
