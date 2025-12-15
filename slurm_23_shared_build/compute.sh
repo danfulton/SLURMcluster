@@ -49,7 +49,7 @@ id -u slurm >/dev/null 2>&1 || sudo adduser  --system --uid 64030  --gid 64030  
 sudo mkdir -p /var/log/slurm
 sudo chown slurm:slurm /var/log/slurm
 sudo mkdir -p /var/spool/slurm
-sudo chown slurm:slurm /var/spool/slurm
+sudo chown -R slurm:slurm /var/spool/slurm
 
 sudo mkdir -p /var/spool/slurmd
 sudo chown slurm:slurm /var/spool/slurmd
@@ -58,7 +58,8 @@ sudo mkdir -p /var/run/slurm
 sudo chown -R slurm:slurm /var/run/slurm
 
 sudo chown -R slurm:slurm /var/log/slurm
-sudo chmod 755 /var/log/slurm
+sudo chown -R slurm:slurm /var/log/slurmd
+sudo chmod -R 755 /var/log/slurm
 sudo chmod 755 /var/log/slurm/*
 
 #sudo unlink /etc/profile.d/99_slurm_path.sh
@@ -69,9 +70,10 @@ sudo chmod 755 /var/log/slurm/*
 #sudo cp $SCHEDROOT/slurm/etc/slurmd.service /usr/lib/systemd/system
 sudo cp $SCHEDROOT/slurm/etc/slurmd.service /etc/systemd/system/
 
+sudo unlink /etc/profile.d/99_slurm_path.sh
 echo 'export PATH=/share/sched/slurm/23.11.5/bin:/share/sched/slurm/23.11.5/sbin:$PATH' | sudo tee /share/sched/slurm/etc/slurm_path.sh
-unlink /etc/profile.d/99_slurm_path.sh
 sudo ln -sf /share/sched/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
+
 sudo systemctl daemon-reload
 sudo systemctl enable slurmd
 sudo systemctl restart slurmd
