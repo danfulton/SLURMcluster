@@ -86,7 +86,7 @@ sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee -a /etc/sysctl.d/99-enroot.conf
 sudo apparmor_parser -R /etc/apparmor.d/enroot
 
-#sudo mv /etc/enroot/hooks.d/98-nvidia.sh /etc/enroot/hooks.d/98-nvidia.sh.disabled
+sudo mv /etc/enroot/hooks.d/98-nvidia.sh /etc/enroot/hooks.d/98-nvidia.sh.disabled
 #
 sudo modprobe nvidia_peermem
 if [[ ! -e /etc/modules-load.d/nvidia_peermem.conf ]]; then
