@@ -22,7 +22,7 @@ fi
 
 #if [[ $slurm_version != $slurm_installed_version ]]; then
 #sudo apt -y install /share/offline-debs/slurm/*.deb   /share/offline-debs/misc/*.deb
-sudo apt -y install /share/offline-debs/misc/*.deb
+#sudo apt -y install /share/offline-debs/misc/*.deb
 #sudo apt -y install /share/offline-debs/slurm-local-build/*.deb 
 #fi
 
@@ -70,9 +70,10 @@ sudo chmod 755 /var/log/slurm/*
 #sudo cp $SCHEDROOT/slurm/etc/slurmd.service /usr/lib/systemd/system
 sudo cp $SCHEDROOT/slurm/etc/slurmd.service /etc/systemd/system/
 
-sudo unlink /etc/profile.d/99_slurm_path.sh
-echo 'export PATH=/share/sched/slurm/23.11.5/bin:/share/sched/slurm/23.11.5/sbin:$PATH' | sudo tee /share/sched/slurm/etc/slurm_path.sh
+#echo 'export PATH=/share/sched/slurm/23.11.5/bin:/share/sched/slurm/23.11.5/sbin:$PATH' | sudo tee /share/sched/slurm/etc/slurm_path.sh
+if [[ ! -e  /etc/profile.d/99_slurm_path.sh ]]; then
 sudo ln -sf /share/sched/slurm/etc/slurm_path.sh /etc/profile.d/99_slurm_path.sh
+fi
 
 sudo systemctl daemon-reload
 sudo systemctl enable slurmd
