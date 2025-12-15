@@ -5,4 +5,4 @@ slurm_db_password.txt
 down_unhealthy_nodes.txt
 nodegroups.d
 rack_enumeration_list.txt
-topology.yaml
+topology.*
