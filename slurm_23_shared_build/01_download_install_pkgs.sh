@@ -77,6 +77,7 @@ make -j 90
 sudo make install
 sudo cp etc/slurmctld.service /etc/systemd/system/
 sudo cp etc/slurmdbd.service /etc/systemd/system/
+sudo cp etc/slurmd.service  $SCHEDROOT/slurm/etc/slurmd.service
 cd ..
 
 tar xzf  /share/sources/v0.20.0.tar.gz
