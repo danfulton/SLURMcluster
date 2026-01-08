@@ -8,34 +8,6 @@ getent group slurm >/dev/null || sudo addgroup --system --gid 64030 slurm
 id -u slurm >/dev/null 2>&1 || sudo adduser  --system --uid 64030  --gid 64030  --disabled-login --disabled-password --no-create-home --gecos "" --shell /usr/sbin/nologin slurm
 
 module load mpi/hpcx
-export HPCX_HCOLL_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll
-export PKG_CONFIG_PATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/lib/pkgconfig:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/lib/pkgconfig:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp/lib/pkgconfig:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll/lib/pkgconfig::/opt/mellanox/flexio/lib/pkgconfig:/opt/mellanox/dpdk/lib/aarch64-linux-gnu/pkgconfig
-export HPCX_CLUSTERKIT_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/clusterkit
-export OMPI_HOME=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export HPCX_OSU_CUDA_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/tests/osu-micro-benchmarks-cuda
-export HPCX_OSU_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/tests/osu-micro-benchmarks
-export HPCX_MPI_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export HPCX_OSHMEM_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export HPCX_UCC_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc
-export MANPATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/share/man
-export HPCX_HOME=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64
-export MPI_HOME=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export OSHMEM_HOME=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export HPCX_UCX_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx
-export SHMEM_HOME=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export LIBRARY_PATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/nccl_rdma_sharp_plugin/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ncclnet_plugin/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/lib
-export HPCX_SHARP_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp
-export LOADEDMODULES=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/modulefiles/hpcx:mpi/hpcx
-export HPCX_NCCLNET_PLUGIN_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ncclnet_plugin
-export PMIX_INSTALL_PREFIX=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export HPCX_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64
-export LD_LIBRARY_PATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/nccl_rdma_sharp_plugin/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ncclnet_plugin/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc/lib/ucc:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc/lib:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/lib/ucx:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/lib:/usr/local/cuda/lib64:
-export OPAL_PREFIX=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi
-export PATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/bin:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/clusterkit/bin:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/tests/imb:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp/bin:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll/bin:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc/bin:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/mellanox/doca/tools/
-export HPCX_NCCL_RDMA_SHARP_PLUGIN_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/nccl_rdma_sharp_plugin
-export HPCX_MPI_TESTS_DIR=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/tests
-export CPATH=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ompi/include:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucc/include:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx/include:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/sharp/include:/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/hcoll/include
-
 
 export SCHEDROOT=/share/sched
 if [[ -e  /etc/slurm ]]; then
@@ -54,25 +26,25 @@ ${script_dir}/sources/download_sources.sh
 
 sudo apt -y install /share/offline-debs/mariadb/*.deb
 sudo apt -y install /share/offline-debs/misc/*.deb
-#sudo apt -y install /share/offline-debs/slurm/*.deb  /share/offline-debs/slurm/server/*.deb /share/offline-debs/slurm/build-slurm/*.deb
-sudo apt -y install /share/offline-debs/slurm/build-slurm/*.deb
 
 
 mkdir -p /share/build
 cd /share/build
 tar -xf  /share/sources/v0.20.0.tar.gz
-tar -xf  /share/sources/slurm-25.11.0.tar.bz2
+tar -xf  /share/sources/slurm-23.11.5.tar.bz2
 tar -xf  /share/sources/pmix-4.2.9.tar.gz
 
 cd pmix-4.2.9
-./configure --prefix=$SCHEDROOT/pmix/v4 --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx --with-hwloc --with-zlib --with-curl 
+#./configure --prefix=$SCHEDROOT/pmix/v4 --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx --with-hwloc --with-zlib --with-curl 
+./configure --prefix=$SCHEDROOT/pmix/v4  
 sudo make -j install
 cd ..
 
 cp /share/sources/slurm-23.11.5.tar.bz2 .
 tar xjf slurm-23.11.5.tar.bz2
 cd slurm-23.11.5/
-./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config --with-hwloc --enable-pam --disable-x11  --with-json --with-yaml --with-nvml  --with-lua --with-munge --with-libcurl --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx
+# CHange back to bare min ## ./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config --with-hwloc --enable-pam --disable-x11  --with-json --with-yaml --with-nvml  --with-lua --with-munge --with-libcurl --with-ucx=/opt/hpcx-v2.24.1-gcc-doca_ofed-ubuntu24.04-cuda13-aarch64/ucx
+./configure --prefix=$SCHEDROOT/slurm/23.11.5 --sysconfdir=$SCHEDROOT/slurm/etc --with-pmix=$SCHEDROOT/pmix/v4 --with-hwloc --enable-pam --disable-x11 --with-mysql_config 
 make -j 90
 sudo make install
 sudo cp etc/slurmctld.service /etc/systemd/system/

@@ -22,7 +22,7 @@ fi
 
 #if [[ $slurm_version != $slurm_installed_version ]]; then
 #sudo apt -y install /share/offline-debs/slurm/*.deb   /share/offline-debs/misc/*.deb
-#sudo apt -y install /share/offline-debs/misc/*.deb
+sudo apt -y install /share/offline-debs/misc/*.deb
 #sudo apt -y install /share/offline-debs/slurm-local-build/*.deb 
 #fi
 
